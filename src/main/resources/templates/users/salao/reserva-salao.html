@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Reservar Salão</title>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/css/styles.css}">
+	<script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
+	<style>
+		html, body {
+		    overflow: hidden !important
+		}
+	</style>
+</head>
+
+<body class="d-flex align-items-center justify-content-center min-vh-100 bg-body-tertiary">
+	<main class="form-signin m-auto p-4 bg-white shadow rounded" style="max-width:600px; min-width:300px;">
+		<form th:action="@{/users/salao/reservar}" method="post" th:object="${reservaDTO}" class="needs-validation">
+			<div class="text-center">
+				<img class="mb-2" th:src="@{/img/salao-reserva-logo-2.png}" alt="Logo" width="300px" height="auto">
+			</div>
+
+			<!-- Seleção do Tipo de Salão -->
+			<div class="form-group">
+				<label for="tipoSalao">Tipo de Salão</label>
+				<select id="tipoSalao" name="tipoSalao" th:field="*{tipoSalao}" class="form-control"
+					onchange="fetchDiasDisponiveis()" required>
+					<option value="">Selecione o tipo de salão</option>
+					<option value="FESTAS">Salão de Festas</option>
+					<option value="JOGOS">Salão de Jogos</option>
+				</select>
+			</div>
+
+			<!-- Dias Disponíveis -->
+			<div class="form-group">
+				<label for="data">Dias Disponíveis</label>
+				<select id="data" name="data" th:field="*{data}" class="form-control" required>
+					<option value="" disabled selected>Selecione um dia disponível</option>
+					<option th:each="dia : ${diasDisponiveis}" th:value="${dia}"
+						th:text="${#dates.format(dia, 'dd/MM/yyyy')}">
+					</option>
+				</select>
+			</div>
+
+			<div class="d-flex justify-content-between">
+				<button type="submit" class="btn btn-lg btn-light fw-bold border-white bg-warning my-3">Reservar</button>
+				<a  th:href="@{/users/home}" class= "btn btn-lg btn-outline-warning fw-bold my-3">Voltar</a>
+			</div>
+			
+			<p class="mt-auto text-dark-50">
+				<span class="text-dark"> © 2024 Salão Reserva</span>, by
+				<span class="text-dark">github.com/kevenadan</span>.</p>
+			</p>
+		</form>
+	</main>
+	<script>
+		function fetchDiasDisponiveis() {
+			const tipoSalao = document.getElementById("tipoSalao").value;
+			if (tipoSalao) {
+				fetch(`/salao-reserva/users/salao/dias-disponiveis?tipoSalao=${tipoSalao}`)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error(`Erro na resposta: ${response.status}`);
+						}
+						return response.json();
+					})
+					.then(dias => {
+						const dataSelect = document.getElementById("data");
+						dataSelect.innerHTML = '<option value="" disabled selected>Selecione um dia disponível</option>';
+						dias.forEach(dia => {
+							const option = document.createElement("option");
+							option.value = dia;
+							option.text = new Date(dia).toLocaleDateString('pt-BR');
+							dataSelect.appendChild(option);
+						});
+					})
+					.catch(error => console.error("Erro ao buscar dias disponíveis:", error));
+			}
+		}
+	</script>
+</body>
+</html>

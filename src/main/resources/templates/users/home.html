@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Client Home</title>
+	<!-- Bootstrap CSS -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</head>
+
+<body class="d-flex vh-100 text-center bg-with">
+	<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+		<header class="mb-auto">
+			<div>
+				<nav class="nav nav-masthead justify-content-center float-md-center bg-with">
+					<li class="nav-item">
+						<a class="nav-link text-dark" th:href="@{/users/home}">Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-dark" th:href="@{/users/salao/reservas}">Reservas</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-dark" th:href="@{/client/services}">Salões</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-dark" th:href="@{/users/register}" sec:authorize="isAnonymous()" >Cadastra-se</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-lg btn-light fw-bold border-white bg-warning" th:href="@{/users/logout}" sec:authorize="isAuthenticated()">Sair</a>
+					</li>
+				</nav>
+			</div>
+		</header>
+
+		<main class="px-3">
+			<div class="text-center">
+				<img class="mb-2" th:src="@{/img/salao-reserva-logo-2.png}" alt="Logo" width="300px" height="auto">
+
+				<p class="text-muted" sec:authorize="isAuthenticated()">
+					Olá <span sec:authentication="name"></span>, seja bem-vindo!
+				</p>
+
+				<p class="text-muted" sec:authorize="isAnonymous()">Entre para continuar</p>
+			</div>
+			<p class="lead">
+				<a th:href="@{/users/salao/reserva-salao}" sec:authorize="isAuthenticated()"
+					class="btn btn-lg btn-light fw-bold border-white bg-warning">
+					Reservar Salão
+				</a>
+
+				<!-- Botão "Login" para Usuários Não Autenticados -->
+				<a th:href="@{/users/login}" sec:authorize="isAnonymous()"
+					class="btn btn-lg btn-light fw-bold border-white bg-warning">
+					Login
+				</a>
+			</p>
+		</main>
+
+		<footer class="mt-auto text-dark-50">
+			<span class="text-dark"> © 2024 Salão Reserva</span>, by
+			<span class="text-dark">github.com/kevenadan</span>.</p>
+		</footer>
+	</div>
+	<script src="/docs/5.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>

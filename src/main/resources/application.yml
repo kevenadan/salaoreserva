@@ -1,0 +1,41 @@
+spring: 
+  application:
+    name: salaoreserva
+    
+  thymeleaf:
+    prefix: classpath:/templates/   # Caminho padrão onde os templates Thymeleaf estão armazenados
+    suffix: .html                   # Sufixo dos arquivos de template
+    mode: HTML                      # Modo de processamento (pode ser HTML, XHTML, etc.)
+    cache: true                     # Defina como false durante o desenvolvimento para ver as mudanças em tempo real
+
+  
+  datasource:
+    url: jdbc:postgresql://aws-0-sa-east-1.pooler.supabase.com:6543/postgres
+    username: ${VAR_ENV_USERNAME}
+    password: ${VAR_ENV_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+    
+  
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format-sql: true
+    
+    hibernate:
+      ddl-auto: update
+  sql:
+    init:
+      mode: always
+
+server: 
+  servlet:
+    context-path: /salao-reserva
+  port: 8080
